@@ -1,0 +1,586 @@
+/* Global Design System Variables */
+:root {
+    --bg-primary: #0b0f19;
+    --bg-secondary: #131a2a;
+    --bg-card: rgba(19, 26, 42, 0.6);
+    --border-color: rgba(255, 255, 255, 0.08);
+    --border-focus: rgba(0, 242, 254, 0.35);
+    
+    --accent-glow: rgba(0, 242, 254, 0.15);
+    --accent-cyan: #00f2fe;
+    --accent-blue: #4facfe;
+    --accent-emerald: #10b981;
+    --accent-rose: #f43f5e;
+    
+    --text-primary: #f8fafc;
+    --text-secondary: #94a3b8;
+    
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --font-primary: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    --font-heading: 'Outfit', sans-serif;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    font-family: var(--font-primary);
+    min-height: 100vh;
+    overflow-x: hidden;
+    line-height: 1.5;
+}
+
+/* App Layout */
+.app-container {
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+/* Header styling */
+.app-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--bg-card);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--border-color);
+    padding: 1.25rem 2rem;
+    border-radius: 16px;
+}
+
+.logo-area {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.pulse-icon {
+    font-size: 2.25rem;
+    animation: pulse 2.5s infinite;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+.logo-area h1 {
+    font-family: var(--font-heading);
+    font-size: 1.5rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.subtitle {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+}
+
+.badge {
+    padding: 0.35rem 0.85rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    border-radius: 20px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+.clinical-badge {
+    background: rgba(0, 242, 254, 0.1);
+    color: var(--accent-cyan);
+    border: 1px solid rgba(0, 242, 254, 0.2);
+}
+
+/* Dashboard Columns */
+.app-layout {
+    display: grid;
+    grid-template-columns: 430px 1fr;
+    gap: 2rem;
+    align-items: start;
+}
+
+@media (max-width: 1024px) {
+    .app-layout {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Card Structures */
+.control-panel, .results-panel {
+    background: var(--bg-card);
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    padding: 2rem;
+    min-height: 600px;
+}
+
+.section-title {
+    font-family: var(--font-heading);
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 0.75rem;
+}
+
+/* Dropzone Upload grid */
+.upload-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.drop-zone {
+    height: 160px;
+    border: 2px dashed var(--border-color);
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.01);
+    transition: var(--transition-smooth);
+}
+
+.drop-zone:hover {
+    border-color: var(--accent-cyan);
+    background: rgba(0, 242, 254, 0.02);
+}
+
+.drop-zone-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 0.35rem;
+    padding: 0.5rem;
+    transition: var(--transition-smooth);
+}
+
+.upload-emoji {
+    font-size: 1.75rem;
+}
+
+.drop-zone h3 {
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.drop-zone p {
+    font-size: 0.7rem;
+    color: var(--text-secondary);
+}
+
+.filename {
+    font-size: 0.65rem;
+    color: var(--text-secondary);
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    display: inline-block;
+    padding: 0.1rem 0.35rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 4px;
+}
+
+.image-preview {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: none;
+    z-index: 2;
+}
+
+/* Form Inputs */
+.clinical-inputs {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    margin-bottom: 2rem;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.input-group label {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+}
+
+.input-group input[type="number"] {
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 0.95rem;
+    transition: var(--transition-smooth);
+}
+
+.input-group input[type="number"]:focus {
+    outline: none;
+    border-color: var(--accent-cyan);
+    box-shadow: 0 0 10px var(--border-focus);
+}
+
+/* Gender Selection Cards */
+.gender-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.gender-card {
+    cursor: pointer;
+}
+
+.gender-card input[type="radio"] {
+    display: none;
+}
+
+.gender-label {
+    display: block;
+    text-align: center;
+    padding: 0.75rem;
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: var(--transition-smooth);
+}
+
+.gender-card input[type="radio"]:checked + .gender-label {
+    border-color: var(--accent-cyan);
+    background: rgba(0, 242, 254, 0.05);
+    color: var(--accent-cyan);
+    box-shadow: 0 0 8px var(--accent-glow);
+}
+
+/* Submission Button */
+.submit-btn {
+    width: 100%;
+    background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
+    color: var(--bg-primary);
+    border: none;
+    padding: 1rem;
+    border-radius: 10px;
+    font-size: 0.95rem;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: var(--font-heading);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    transition: var(--transition-smooth);
+}
+
+.submit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 242, 254, 0.4);
+}
+
+.submit-btn:active {
+    transform: translateY(0);
+}
+
+.spinner {
+    width: 20px;
+    height: 20px;
+    border: 3px solid rgba(11, 15, 25, 0.3);
+    border-radius: 50%;
+    border-top-color: var(--bg-primary);
+    animation: spin 1s ease-in-out infinite;
+    display: none;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Empty State Styling */
+.empty-state {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    height: 100%;
+    max-width: 500px;
+    margin: 0 auto;
+    gap: 1rem;
+    color: var(--text-secondary);
+}
+
+.dashboard-emoji {
+    font-size: 4rem;
+}
+
+.empty-state h2 {
+    font-family: var(--font-heading);
+    color: var(--text-primary);
+    font-size: 1.5rem;
+}
+
+.empty-state p {
+    font-size: 0.9rem;
+    line-height: 1.6;
+}
+
+/* Active Dashboard Container */
+.dashboard {
+    animation: fadeIn 0.4s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Metrics Dashboard Cards */
+.metrics-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.3fr;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+@media (max-width: 640px) {
+    .metrics-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.card {
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 1.5rem;
+}
+
+.card h3 {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-secondary);
+    margin-bottom: 1rem;
+}
+
+/* Probability Gauge */
+.risk-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.gauge-container {
+    text-align: center;
+    margin-bottom: 0.75rem;
+}
+
+.gauge-value {
+    font-family: var(--font-heading);
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--accent-cyan);
+    text-shadow: 0 0 15px var(--accent-glow);
+}
+
+.gauge-sub {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+}
+
+.gauge-track {
+    width: 100%;
+    height: 8px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.gauge-fill {
+    width: 0%;
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent-cyan), var(--accent-blue));
+    border-radius: 10px;
+    transition: width 1.2s cubic-bezier(0.1, 0.8, 0.25, 1);
+}
+
+/* Stratification results cards */
+.classification-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.classification-value {
+    font-family: var(--font-heading);
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.state-normal {
+    color: var(--accent-emerald);
+    text-shadow: 0 0 15px rgba(16, 185, 129, 0.2);
+}
+
+.state-thickened {
+    color: var(--accent-rose);
+    text-shadow: 0 0 15px rgba(244, 63, 94, 0.2);
+}
+
+.explanation-text {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    margin-bottom: 1rem;
+}
+
+.stratification-badges {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.mini-badge {
+    font-size: 0.65rem;
+    font-weight: 600;
+    padding: 0.25rem 0.6rem;
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border-color);
+}
+
+.mini-badge.badge-normal {
+    background: rgba(16, 185, 129, 0.1);
+    color: var(--accent-emerald);
+    border-color: rgba(16, 185, 129, 0.2);
+}
+
+.mini-badge.badge-thickened {
+    background: rgba(244, 63, 94, 0.1);
+    color: var(--accent-rose);
+    border-color: rgba(244, 63, 94, 0.2);
+}
+
+/* Tab headers */
+.explainability-card {
+    padding: 1.5rem;
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 0.75rem;
+    margin-bottom: 1rem;
+}
+
+.card-header h3 {
+    margin-bottom: 0;
+}
+
+.tabs {
+    display: flex;
+    gap: 0.5rem;
+    background: rgba(0, 0, 0, 0.25);
+    padding: 0.25rem;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+}
+
+.tab-btn {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    padding: 0.35rem 0.85rem;
+    font-family: inherit;
+    font-size: 0.75rem;
+    font-weight: 600;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: var(--transition-smooth);
+}
+
+.tab-btn:hover {
+    color: var(--text-primary);
+}
+
+.tab-btn.active {
+    background: var(--bg-secondary);
+    color: var(--accent-cyan);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+.tab-desc {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    margin-bottom: 1rem;
+}
+
+/* Image comparison sliders */
+.image-comparison {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+}
+
+@media (max-width: 500px) {
+    .image-comparison {
+        grid-template-columns: 1fr;
+    }
+}
+
+.image-box {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.image-box h4 {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-secondary);
+}
+
+.image-box img {
+    width: 100%;
+    aspect-ratio: 1;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    object-fit: cover;
+    background: #000;
+}

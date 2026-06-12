@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CIMT Multimodal CVD Predictor</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="logo-area">
+                <span class="pulse-icon">❤️</span>
+                <div>
+                    <h1>CIMT Multimodal Predictor</h1>
+                    <p class="subtitle">RETFound-Green Cardiovascular Risk Screening</p>
+                </div>
+            </div>
+            <div class="badge-area">
+                <span class="badge clinical-badge">Clinical Preview</span>
+            </div>
+        </header>
+
+        <main class="app-layout">
+            <!-- Left Side: Control Form -->
+            <section class="control-panel">
+                <h2 class="section-title">Patient Data & Fundus Inputs</h2>
+                <form id="predictor-form">
+
+                    <!-- Drag and Drop zones -->
+                    <div class="upload-grid">
+                        <div class="drop-zone" id="right-eye-zone">
+                            <input type="file" id="right-eye-input" accept="image/*" required hidden>
+                            <div class="drop-zone-content">
+                                <span class="upload-emoji">👁️</span>
+                                <h3>Right Eye Fundus</h3>
+                                <p>Drag & drop or click</p>
+                                <span class="filename" id="right-filename">No file selected</span>
+                            </div>
+                            <img id="right-preview" class="image-preview" src="" alt="Right Eye Preview">
+                        </div>
+
+                        <div class="drop-zone" id="left-eye-zone">
+                            <input type="file" id="left-eye-input" accept="image/*" required hidden>
+                            <div class="drop-zone-content">
+                                <span class="upload-emoji">👁️</span>
+                                <h3>Left Eye Fundus</h3>
+                                <p>Drag & drop or click</p>
+                                <span class="filename" id="left-filename">No file selected</span>
+                            </div>
+                            <img id="left-preview" class="image-preview" src="" alt="Left Eye Preview">
+                        </div>
+                    </div>
+
+                    <!-- Clinical Demographics -->
+                    <div class="clinical-inputs">
+                        <div class="input-group">
+                            <label for="age-input">Patient Age</label>
+                            <input type="number" id="age-input" min="1" max="120" placeholder="e.g. 62" required>
+                        </div>
+
+                        <div class="input-group">
+                            <label>Biological Sex</label>
+                            <div class="gender-cards">
+                                <label class="gender-card">
+                                    <input type="radio" name="gender" value="male" checked>
+                                    <span class="gender-label">Male</span>
+                                </label>
+                                <label class="gender-card">
+                                    <input type="radio" name="gender" value="female">
+                                    <span class="gender-label">Female</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="submit-btn" id="submit-button">
+                        <span class="btn-text">Run Diagnostic Screening</span>
+                        <div class="spinner" id="btn-spinner"></div>
+                    </button>
+                </form>
+            </section>
+
+            <!-- Right Side: Results Panel -->
+            <section class="results-panel">
+                <!-- Empty State -->
+                <div class="empty-state" id="empty-results">
+                    <span class="dashboard-emoji">📊</span>
+                    <h2>Awaiting Diagnostics</h2>
+                    <p>Provide patient demographics and upload bilateral eye fundus images, then click "Run Diagnostic
+                        Screening" to generate the risk prediction dashboard.</p>
+                </div>
+
+                <!-- Active Dashboard -->
+                <div class="dashboard" id="active-results" style="display: none;">
+                    <h2 class="section-title">Diagnostic Screening Dashboard</h2>
+
+                    <div class="metrics-grid">
+                        <div class="card risk-card">
+                            <h3>Cardiovascular Risk Score</h3>
+                            <div class="gauge-container">
+                                <div class="gauge-value" id="risk-percentage">0.0%</div>
+                                <div class="gauge-sub">Probability</div>
+                            </div>
+                            <div class="gauge-track">
+                                <div class="gauge-fill" id="risk-bar"></div>
+                            </div>
+                        </div>
+
+                        <div class="card classification-card">
+                            <h3>CIMT Stratification</h3>
+                            <div class="classification-value" id="risk-category">Normal</div>
+                            <p class="explanation-text" id="risk-explanation">
+                                Calculated risk is below the validation threshold. Patient is classified as CIMT Normal.
+                            </p>
+                            <div class="stratification-badges">
+                                <div class="mini-badge" id="badge-youden">Youden: Normal</div>
+                                <div class="mini-badge" id="badge-sens85">Sens85%: Normal</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Explanatory GradCAM Visualization Grid -->
+                    <div class="card explainability-card">
+                        <div class="card-header">
+                            <h3>Bilateral GradCAM++ Explainability</h3>
+                            <div class="tabs">
+                                <button class="tab-btn active" data-tab="right-eye-tab">Right Eye</button>
+                                <button class="tab-btn" data-tab="left-eye-tab">Left Eye</button>
+                            </div>
+                        </div>
+
+                        <div class="tab-content active" id="right-eye-tab">
+                            <p class="tab-desc">GradCAM++ activation focus on the Right eye fundus image. Red indicates
+                                high network attention.</p>
+                            <div class="image-comparison">
+                                <div class="image-box">
+                                    <h4>Preprocessed Original</h4>
+                                    <img id="right-display-original" src="" alt="Right original">
+                                </div>
+                                <div class="image-box">
+                                    <h4>GradCAM++ Overlay</h4>
+                                    <img id="right-display-cam" src="" alt="Right GradCAM">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tab-content" id="left-eye-tab" style="display: none;">
+                            <p class="tab-desc">GradCAM++ activation focus on the Left eye fundus image. Red indicates
+                                high network attention.</p>
+                            <div class="image-comparison">
+                                <div class="image-box">
+                                    <h4>Preprocessed Original</h4>
+                                    <img id="left-display-original" src="" alt="Left original">
+                                </div>
+                                <div class="image-box">
+                                    <h4>GradCAM++ Overlay</h4>
+                                    <img id="left-display-cam" src="" alt="Left GradCAM">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="main.js"></script>
+</body>
+
+</html>
